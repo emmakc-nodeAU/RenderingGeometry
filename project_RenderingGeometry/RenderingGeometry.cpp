@@ -145,15 +145,16 @@ void RenderingGeometry::setupShader()
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 }
-// VERTEX BUFFER: Populate with vertex information
-// 1. Generate a grid of vertex points
+/////////////////////////////////		VBO			//////////////////////////////////////
 
-// GRID: Vertex points, stored in the vertex buffer
+// VBO Step 2. VBO Data creation - Create a grid of vertex points
+
+// DATA: GRID
 void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 {
 	// 1. Allocate memory to hold vertex data
 	Vertex* aoVertices = new Vertex[rows * cols];
-	// 2. Populate meory with vertex data
+	// 2. Populate memory with vertex data
 
 	// ROWS
 	for (unsigned int r = 0; r < rows; ++r)
@@ -164,30 +165,32 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 			Vertex& vert = aoVertices[r * cols + c];
 			vert.position = glm::vec4((float)c, 0, (float)r, 1.0f);
 			vert.colour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-
-			// Create a position
-			//aoVertices[r*cols + c].position = vec4((float)c, 0, (float)r, 1);
-			// Create a colour
-			//vec3 colour = vec3(sinf((c / (float)(cols - 1))*(r / (float)(rows - 1))));
-			//aoVertices[r*cols + c].colour = vec4(colour, 1);
 		}
 	}
-	// 3. Send data to graphics card
+// VBO Step 3. CREATE & BIND BUFFERS - Map data to GPU
+	// a. Create Buffer: Size 1
 	glGenBuffers(1, &m_VBO);
+	// b. Bind the VBO to VAO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	// c. Pass in the Data variables from VBO to VAO
 	glBufferData(GL_ARRAY_BUFFER, (rows * cols) * sizeof(Vertex), aoVertices, GL_STATIC_DRAW);
-
-
+	// d. Assign Data to memory index 0 or 1.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+
+/////////////////////////////////		IBO Part 1			//////////////////////////////////////
+
+	// IBO Step 1: Create Index loop
+	// Create Index Array
 	m_numberOfIndices = (rows - 1) * (cols - 1) * 6;
 	unsigned int* auiIndices = new unsigned int[m_numberOfIndices];
 	unsigned int index = 0;
-
+	// Generate the index positions of each triangle that forms a quad in the VBO grid.
 	for (unsigned int r = 0; r < (rows - 1); ++r)
 	{
 		for (unsigned int c = 0; c < (cols - 1); ++c)
 		{
+			// DRAW QUAD, comprised of two triangles:
 			// Tri 1
 			auiIndices[index++] = r * cols + c;
 			auiIndices[index++] = (r + 1) * cols + c;
@@ -199,11 +202,18 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 			auiIndices[index++] = r * cols + (c + 1);
 		}
 	}
-
+/////////////////////////////////		IBO	Part 2			//////////////////////////////////////
+	// IBO Step 2: CREATE & BIND BUFFER
+	// a. Create Buffer: Size 1
 	glGenBuffers(1, &m_IBO);
+	// b. Bind the IBO to VAO 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	// c. Pass in the Index from IBO to VAO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rows - 1) * (cols - 1) * 6 * sizeof(unsigned int), auiIndices, GL_STATIC_DRAW);
+	// d. Assign Data to memory index 0 or 1.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+/////////////////////////////////			VAO				//////////////////////////////////////
 
 	// Generate Vertex Array Object
 	glGenVertexArrays(1, &m_VAO);
