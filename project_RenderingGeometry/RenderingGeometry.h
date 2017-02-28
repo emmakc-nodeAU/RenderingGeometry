@@ -33,15 +33,24 @@ protected:
 	// DATA for VB:
 	void generateGrid(unsigned int rows, unsigned int cols);
 	
+	// CAMERA:	
 	glm::mat4	m_viewMatrix;
 	glm::mat4	m_projectionMatrix;
 
 	// Vertex and Index Array Buffers
 	unsigned int m_VAO;
-	unsigned int m_VBO;
+	unsigned int m_VBO;	// Storages Vertex Data from GPU. 
 	unsigned int m_IBO;
 
 	unsigned int m_numberOfIndices; // not used anywhere, couldnt keep up with tut
-	// Shader
+	
+	// Shader program
 	unsigned int m_programID;
 };
+
+/*
+1. VBO: Storage of Vertex Data from GPU.
+		1. First bind the VBO.
+		2. Inform OpenGL of data size, and type.
+		3. Map vertex data to VBO.
+*/
