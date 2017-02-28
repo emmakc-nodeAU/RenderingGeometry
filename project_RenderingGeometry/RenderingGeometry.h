@@ -61,6 +61,11 @@ protected:
 		3. Generate and fill OpenGL Index Buffer
 		4. DELETE array
 
-3. VAO:	Describes the vertex attributes
-		1. 
+3. VAO:	Describes the vertex attributes pointers
+		1. Create Array
+		2. Generate Grid() Bind
+		3. Fill VBO and IBO into VAO
+		4. Allocate memory slots
+		5. Set pointer attributes
+		6. Draw() Bind VAO
 */
