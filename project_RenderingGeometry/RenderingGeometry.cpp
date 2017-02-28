@@ -145,6 +145,8 @@ void RenderingGeometry::setupShader()
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 }
+// VERTEX BUFFER: Populate with vertex information
+// 1. Generate a grid of vertex points
 
 // GRID: Vertex points, stored in the vertex buffer
 void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)

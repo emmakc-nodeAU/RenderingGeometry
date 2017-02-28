@@ -30,6 +30,7 @@ protected:
 	// Setup shader ()
 	void setupShader();
 
+	// DATA for VB:
 	void generateGrid(unsigned int rows, unsigned int cols);
 	
 	glm::mat4	m_viewMatrix;
