@@ -94,7 +94,9 @@ void RenderingGeometry::draw()
 
 	unsigned int indexCount = m_numberOfIndices;
 
-	// RENDER: triangles
+
+
+	// DRAW triangle mesh
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -147,7 +149,7 @@ void RenderingGeometry::setupShader()
 }
 /////////////////////////////////		VBO			//////////////////////////////////////
 
-// VBO Step 2. VBO Data creation - Create a grid of vertex points
+// VBO Step 1. VBO Data creation - Create a grid of vertex points
 
 // DATA: GRID
 void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
@@ -167,7 +169,7 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 			vert.colour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 		}
 	}
-// VBO Step 3. CREATE & BIND BUFFERS - Map data to GPU
+// VBO Step 2. CREATE & BIND BUFFERS - Map data to GPU
 	// a. Create Buffer: Size 1
 	glGenBuffers(1, &m_VBO);
 	// b. Bind the VBO to VAO
@@ -176,7 +178,6 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 	glBufferData(GL_ARRAY_BUFFER, (rows * cols) * sizeof(Vertex), aoVertices, GL_STATIC_DRAW);
 	// d. Assign Data to memory index 0 or 1.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 
 /////////////////////////////////		IBO Part 1			//////////////////////////////////////
 
@@ -215,24 +216,33 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 
 /////////////////////////////////			VAO				//////////////////////////////////////
 
-	// Generate Vertex Array Object
+// VAO Step 1: CREATE & BIND
+	// a. Create Array: Size 1
 	glGenVertexArrays(1, &m_VAO);
+	// b. Bind the VAO to VAO ?
 	glBindVertexArray(m_VAO);
-
-	// Bind the Buffers: 
+	// c. BIND & FILL VBO & IBO to VAO
+	// Bind 1: VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	// Bind 2: IBO
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-
+	
+	// d. Assign Data to memory index 0 and 1.
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
+	// e. VAO Attributes: 
+	// VBO Attributes: Index 0, Size 4, Type F, normalized, stride, pointer
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	// IBO Attributes: Index 1, Size 4, Type F, normalized, stride, pointer
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
 
 	glBindVertexArray(0);
 
 	// 4. Delete allocated memory
+	// Delete VBO array
 	delete[] aoVertices;
+	// Delete IBO array
 	delete[] auiIndices;
 }
 

@@ -50,14 +50,17 @@ protected:
 
 /*
 1. VBO: Storage of Vertex Data from GPU.
-		1. First create and bind the VBO.
+		1. CREATE and BIND the VBO.
 		2. Inform OpenGL of data size, and type.
 		3. Map vertex data to VBO.
+		4. DELETE array
 
 2. IBO:	Drawing Instructions to OpenGL: Order to draw the Vertex Points
-		1. Create Index array
+		1. CREATE Index array
 		2. Index VBO data coordinates
 		3. Generate and fill OpenGL Index Buffer
+		4. DELETE array
 
-3. VAO:	
+3. VAO:	Describes the vertex attributes
+		1. 
 */
