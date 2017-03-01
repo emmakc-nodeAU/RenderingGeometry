@@ -42,7 +42,7 @@ protected:
 	unsigned int m_VBO;	// Storages Vertex Data from GPU. 
 	unsigned int m_IBO;
 
-	unsigned int m_numberOfIndices; // not used anywhere, couldnt keep up with tut
+	unsigned int m_numberOfIndices;	// IBO Index Loop variable
 	
 	// Shader program
 	unsigned int m_programID;

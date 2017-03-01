@@ -90,9 +90,9 @@ void RenderingGeometry::draw()
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(projView));
 
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(m_VAO);						// VAO with VBO/IBO?
 
-	unsigned int indexCount = m_numberOfIndices;
+	unsigned int indexCount = m_numberOfIndices;	// IBO
 
 
 
@@ -102,7 +102,7 @@ void RenderingGeometry::draw()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	Gizmos::draw(m_projectionMatrix * m_viewMatrix);
 }
-// SHADER
+/////////////////////////////////		SHADER			//////////////////////////////////////
 void RenderingGeometry::setupShader()
 {
 	const char* vsSource = "#version 410\n \
@@ -147,13 +147,15 @@ void RenderingGeometry::setupShader()
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 }
-/////////////////////////////////		VBO			//////////////////////////////////////
 
-// VBO Step 1. VBO Data creation - Create a grid of vertex points
 
 // DATA: GRID
 void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 {
+	/////////////////////////////////		VBO			//////////////////////////////////////
+
+	// VBO Step 1. VBO Data creation - Create a grid of vertex points
+
 	// 1. Allocate memory to hold vertex data
 	Vertex* aoVertices = new Vertex[rows * cols];
 	// 2. Populate memory with vertex data
